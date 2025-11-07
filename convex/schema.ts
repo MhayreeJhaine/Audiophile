@@ -6,18 +6,19 @@ export default defineSchema({
     customer: v.object({
       name: v.string(),
       email: v.string(),
-      phone: v.optional(v.string()),
+      phone: v.string(),
     }),
     shipping: v.object({
       address: v.string(),
       city: v.string(),
       country: v.string(),
-      postalCode: v.string(),
     }),
     items: v.array(
       v.object({
         id: v.string(),
         name: v.string(),
+        category: v.string(),
+        description: v.string(),
         price: v.number(),
         quantity: v.number(),
       })
@@ -25,6 +26,7 @@ export default defineSchema({
     totals: v.object({
       subtotal: v.number(),
       shipping: v.number(),
+      tax: v.number(),
       grandTotal: v.number(),
     }),
     status: v.string(),
