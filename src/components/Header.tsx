@@ -9,7 +9,7 @@ interface NavLink {
   path: string;
 }
 
-const Header: React.FC = () => {
+const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const toggleMenu = () => setMenuOpen((prev) => !prev);
   const location = useLocation();
@@ -22,7 +22,7 @@ const Header: React.FC = () => {
   ];
 
   return (
-    <header className="w-full bg-[#141414] text-white relative z-50">
+    <header className="w-full bg-[#141414] text-white relative z-50 px-7">
       <div className="container mx-auto px-4 border-b border-white/20 py-6 flex items-center justify-between">
         <div className="flex items-center gap-4">
           <button
@@ -34,7 +34,11 @@ const Header: React.FC = () => {
           </button>
 
           <Link to="/" className="flex items-center justify-center">
-            <img src={'/audiophile.png'} alt="audiophile logo" className="w-32 sm:w-36 md:w-40" />
+            <img
+              src={"/audiophile.png"}
+              alt="audiophile logo"
+              className="w-32 sm:w-36 md:w-40"
+            />
           </Link>
         </div>
 

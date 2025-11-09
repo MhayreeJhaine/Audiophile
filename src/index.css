@@ -7,10 +7,18 @@
 /* ✅ Define your custom font */
 @theme {
   --font-manrope: "Manrope", sans-serif;
+
+  /* Colors */
+  --color-orange: #d87d4a;
+  --color-lightOrange: #fbaf85;
+  --color-white: #fff;
+  --color-black: #000;
+  --color-hoverBlack: #4c4c4c;
 }
 
 @keyframes image-bounce {
-  0%, 100% {
+  0%,
+  100% {
     transform: translateY(0);
   }
   50% {
