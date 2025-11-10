@@ -1,4 +1,3 @@
-import React from "react";
 import { Link } from "react-router-dom";
 
 const RelatedProducts = ({ others }: { others: any[] }) => {
@@ -11,7 +10,7 @@ const RelatedProducts = ({ others }: { others: any[] }) => {
       <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 md:gap-[30px] gap-6 sm:mt-12 mt-8">
         {others.map((product, index) => (
           <div key={index}>
-            <div className="bg-[#f1f1f1] h-[318px] flex items-center justify-center">
+            <div className="bg-lightGray h-[318px] flex items-center justify-center">
               <img
                 src={product.image.desktop.replace("./assets", "")}
                 alt={product.name}
@@ -25,7 +24,7 @@ const RelatedProducts = ({ others }: { others: any[] }) => {
               </h3>
               <Link
                 to={`/product/${product.slug}`}
-                className="bg-[#D87D4A] text-white block w-fit sm:mt-8 mt-4 mx-auto px-8 py-4 uppercase text-sm font-medium tracking-[1px] cursor-pointer hover:bg-[#FBAF85] transition-colors duration-300"
+                className="bg-orange text-white block w-fit sm:mt-8 mt-4 mx-auto px-8 py-4 uppercase text-sm font-medium tracking-[1px] cursor-pointer hover:bg-lightOrange transition-colors duration-300"
               >
                 see product
               </Link>

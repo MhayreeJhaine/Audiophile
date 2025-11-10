@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { ShoppingCart, Menu, X } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
-// import logo from "/audiophile.png";
 import { CartDialog } from "./CartDialog";
+// import logo from "/audiophile.png";
 
 interface NavLink {
   label: string;

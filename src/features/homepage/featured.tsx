@@ -70,7 +70,7 @@ const FeaturedProducts = () => {
           <img src={"/earphone-2.png"} alt="earphones" />
         </div>
 
-        <div className="bg-[#f1f1f1] rounded-xl flex items-center sm:h-auto h-[200px]">
+        <div className="bg-lightGray rounded-xl flex items-center sm:h-auto h-[200px]">
           <div className="xl:pl-[120px] pl-[60px]">
             <h3 className="text-black font-bold lg:text-[28px] text-[20px] uppercase leading-normal mb-6 tracking-[2px]">
               yx1 <br /> earphones

@@ -5,10 +5,13 @@ import "./index.css";
 import App from "./App";
 import { BrowserRouter } from "react-router-dom";
 import { ConvexProvider, ConvexReactClient } from "convex/react";
-// import convexConfig from "../convex/_generated/config";
 
 // Create the Convex client instance
 // const convex = new ConvexReactClient(convexConfig);
+const convex = new ConvexReactClient(import.meta.env.VITE_CONVEX_URL!, {
+  unsavedChangesWarning: false,
+});
+// const convex = new ConvexReactClient(process);
 
 const rootElement = document.getElementById("root") as HTMLElement;
 const root = createRoot(rootElement);
@@ -16,9 +19,9 @@ const root = createRoot(rootElement);
 root.render(
   <StrictMode>
     <BrowserRouter>
-      {/* <ConvexProvider client={convex}> */}
+      <ConvexProvider client={convex}>
         <App />
-      {/* </ConvexProvider> */}
+      </ConvexProvider>
     </BrowserRouter>
   </StrictMode>
 );

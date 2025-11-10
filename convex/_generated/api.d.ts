@@ -8,7 +8,8 @@
  * @module
  */
 
-import type * as orders from "../orders.js";
+import type * as cart from "../cart.js";
+import type * as sendConfirmationEmail from "../sendConfirmationEmail.js";
 
 import type {
   ApiFromModules,
@@ -25,7 +26,8 @@ import type {
  * ```
  */
 declare const fullApi: ApiFromModules<{
-  orders: typeof orders;
+  cart: typeof cart;
+  sendConfirmationEmail: typeof sendConfirmationEmail;
 }>;
 declare const fullApiWithMounts: typeof fullApi;
 

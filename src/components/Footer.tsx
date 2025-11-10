@@ -4,11 +4,11 @@ import { Facebook, Twitter, Instagram } from "lucide-react";
 
 const Footer = () => {
   return (
-    <footer className="w-full bg-[#0f0f0f] pb-20 px-0 lg:px-15">
+    <footer className="w-full bg-[#0f0f0f] pb-20 px-0 md:px-5 lg:px-10">
       <section className="container mx-auto px-4">
-        <div className="w-[100px] h-2 bg-[#D87D4A] sm:mx-0 mx-auto"></div>
+        <div className="w-[100px] h-2 bg-orange sm:mx-0 mx-auto"></div>
 
-        <div className="flex md:items-center items-start md:flex-row flex-col gap-8 justify-between w-full md:mt-[75px] mt-12 sm:text-left text-center">
+        <div className="flex items-start flex-col md:items-start lg:flex-row gap-8 justify-between w-full md:mt-[75px] mt-12 sm:text-left text-center">
           <img
             src={"/audiophile.png"}
             alt="audiophile logo"
