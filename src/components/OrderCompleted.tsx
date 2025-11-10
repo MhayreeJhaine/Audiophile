@@ -1,6 +1,7 @@
 import { Dialog, DialogContent, DialogClose } from "../components/ui/dialog";
 import { Link } from "react-router-dom";
 import { DialogTitle } from "@radix-ui/react-dialog";
+import { FaCircleCheck } from "react-icons/fa6";
 
 interface OrderCompletedProps {
   open: boolean;
@@ -13,6 +14,7 @@ interface OrderCompletedProps {
     image: string;
   }[];
   grandTotal: number;
+  onClearCart?: () => void;
 }
 
 export function OrderCompleted({
@@ -20,6 +22,7 @@ export function OrderCompleted({
   onOpenChange,
   cartItems,
   grandTotal,
+  onClearCart,
 }: OrderCompletedProps) {
   if (!cartItems || cartItems.length === 0) return null;
 
@@ -27,16 +30,28 @@ export function OrderCompleted({
   const remainingCount = cartItems.length - 1;
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog
+      open={open}
+      onOpenChange={(val) => {
+        onOpenChange(val);
+        onClearCart?.();
+      }}
+    >
       <DialogContent className="fixed inset-0 flex items-center justify-center bg-white rounded-lg shadow-xl h-fit my-auto sm:w-[540px] w-[320px] mx-auto sm:p-8 p-4">
-        <div className="w-full">
-          <img src={"/checkmark.png"} alt="check-mark" className="mx-auto" />
+        <div className="w-full mt-5">
+          {/* <img
+            src={"../../public/check-mark.png"}
+            alt="check-mark"
+            className="mx-auto self-start"
+          /> */}
 
-          <DialogTitle className="sm:my-6 my-4 uppercase md:text-[32px] text-[24px] font-bold md:leading-9 tracking-[1.14px] text-center">
+          <FaCircleCheck className="text-orange" size={60} />
+
+          <DialogTitle className="sm:my-6 my-4 uppercase md:text-[32px] text-[24px] font-bold md:leading-9 tracking-[1.14px] text-left ">
             thank you <br /> for your order
           </DialogTitle>
 
-          <p className="font-medium text-[15px] leading-[25px] text-black/50 text-center">
+          <p className="font-medium text-[15px] leading-[25px] text-black/50 text-left">
             You will receive an email confirmation shortly.
           </p>
 

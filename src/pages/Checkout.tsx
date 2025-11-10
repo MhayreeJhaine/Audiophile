@@ -13,11 +13,14 @@ export default function Checkout() {
   const navigate = useNavigate();
 
   const userId = "guest";
+
+  // Get cart items
   const cartItems = useQuery(api.cart.getCart, { userId }) ?? [];
 
-  const sendEmailMutation = useMutation(
-    api.sendConfirmationEmail.sendConfirmationEmail
-  );
+  // Mutation to clear cart
+  const clearCartMutation = useMutation(api.cart.clearCart);
+
+  // Calculate totals
   const { total, shipping, vat, grandTotal } = useMemo(() => {
     const total = cartItems.reduce(
       (acc, item) => acc + item.price * item.quantity,
@@ -29,34 +32,30 @@ export default function Checkout() {
     return { total, shipping, vat, grandTotal };
   }, [cartItems]);
 
+  // Clear cart function
+  const clearCart = async () => {
+    try {
+      await clearCartMutation({ userId });
+    } catch (err) {
+      console.error("Error clearing cart:", err);
+    }
+  };
+
+  // Handle continue/checkout
   const handleContinue = async () => {
-    if (!formData) return;
+    if (!formData || cartItems.length === 0) return;
 
     const timestamp = Date.now();
     const orderId = `ODR${timestamp}`;
 
-    console.log("Calling sendConfirmationEmail...");
-
     try {
-      await sendEmailMutation({
-        userId,
-        orderId,
-        name: formData.name,
-        email: formData.email,
-        address: formData.address,
-        city: formData.city,
-        zipcode: formData.zipcode,
-        country: formData.country,
-        cartItems,
-        total,
-        shipping,
-        vat,
-        grandTotal,
-      });
+      // Email mutation is inactive for now
+      // await sendEmailMutation({ ... });
 
+      // Show order completed dialog
       setOpenDialog(true);
     } catch (err) {
-      console.error("Failed to send email or clear cart:", err);
+      console.error("Error processing order:", err);
     }
   };
 
@@ -88,11 +87,13 @@ export default function Checkout() {
         </section>
       </section>
 
+      {/* Order completed modal */}
       <OrderCompleted
         open={openDialog}
         onOpenChange={setOpenDialog}
         cartItems={cartItems}
         grandTotal={grandTotal}
+        onClearCart={clearCart} // cart cleared on modal close
       />
     </main>
   );

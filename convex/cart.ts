@@ -71,6 +71,7 @@ export const decreaseQuantity = mutation({
 export const clearCart = mutation({
   args: { userId: v.string() },
   handler: async (ctx, { userId }) => {
+    console.log("🧹 Clearing cart for:", userId);
     const items = await ctx.db
       .query("cart")
       .filter((q) => q.eq(q.field("userId"), userId))
@@ -78,5 +79,6 @@ export const clearCart = mutation({
     for (const item of items) {
       await ctx.db.delete(item._id);
     }
+    console.log("✅ Cart cleared successfully");
   },
 });
