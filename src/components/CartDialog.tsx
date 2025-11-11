@@ -13,17 +13,20 @@ import toast from "react-hot-toast";
 import { useAnonUserId } from "../lib/getUserId";
 
 export function CartDialog() {
+  // Get or generate unique guest user ID
   const userId = useAnonUserId();
 
+  // Only query cart when userId is ready
   const cartItems = userId
     ? (useQuery(api.cart.getCart, { userId }) ?? [])
     : [];
 
+  // Mutations
   const increaseQuantity = useMutation(api.cart.increaseQuantity);
   const decreaseQuantity = useMutation(api.cart.decreaseQuantity);
   const clearCart = useMutation(api.cart.clearCart);
 
-  // Loading state while userId initializes
+  // Loading state while userId is initializing
   if (!userId) {
     return (
       <button aria-label="Loading cart...">
@@ -32,11 +35,13 @@ export function CartDialog() {
     );
   }
 
+  // Handlers
   const handleIncrease = async (itemId: Id<"cart">) => {
     try {
       await increaseQuantity({ itemId });
     } catch (err) {
       console.error("Error increasing quantity:", err);
+      toast.error("Failed to increase quantity");
     }
   };
 
@@ -45,6 +50,7 @@ export function CartDialog() {
       await decreaseQuantity({ itemId });
     } catch (err) {
       console.error("Error decreasing quantity:", err);
+      toast.error("Failed to decrease quantity");
     }
   };
 
@@ -54,6 +60,7 @@ export function CartDialog() {
       toast.success("Cart cleared");
     } catch (err) {
       console.error("Error clearing cart:", err);
+      toast.error("Failed to clear cart");
     }
   };
 
