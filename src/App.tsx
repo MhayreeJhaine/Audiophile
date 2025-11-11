@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Routes, Route } from "react-router-dom";
 import "./App.css";
 
@@ -11,26 +11,15 @@ import Speakers from "./pages/Speakers";
 import Checkout from "./pages/Checkout";
 import ProductDetails from "./pages/ProductDetails";
 import { Toaster } from "react-hot-toast";
-import { useAnonUserId } from "./lib/getUserId";
-import { useMutation } from "convex/react";
-import { api } from "../convex/_generated/api";
+import ClearCartOnLoad from "./lib/clearCartOnLoad";
 
 const App = () => {
-  const userId = useAnonUserId();
-  const clearCartMutation = useMutation(api.cart.clearCart);
-
-  useEffect(() => {
-    if (userId) {
-      clearCartMutation({ userId })
-        .then(() => console.log("Cart cleared on load ✅"))
-        .catch((err) => console.error("Error clearing cart on load:", err));
-    }
-  }, [userId]);
-
   return (
     <div className="app">
       <Header />
       <Toaster position="top-center" reverseOrder={false} />
+
+      <ClearCartOnLoad />
 
       <Routes>
         <Route path="/" element={<Home />} />
