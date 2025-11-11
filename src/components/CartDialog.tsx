@@ -16,7 +16,9 @@ export function CartDialog() {
   const userId = useAnonUserId();
 
   const cartItems =
-    useQuery(api.cart.getCart, userId ? { userId } : "skip") ?? [];
+    useQuery(api.cart.getCart, userId ? { userId } : "skip")?.filter(
+      (item) => !!item?._id
+    ) ?? [];
 
   const increaseQuantity = useMutation(api.cart.increaseQuantity);
   const decreaseQuantity = useMutation(api.cart.decreaseQuantity);
