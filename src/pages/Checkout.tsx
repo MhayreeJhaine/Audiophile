@@ -5,19 +5,22 @@ import { api } from "../../convex/_generated/api";
 import CheckoutForm from "../features/checkout/checkoutForm";
 import { OrderSummary } from "../features/checkout/orderSummary";
 import { OrderCompleted } from "../components/OrderCompleted";
+import { useAnonUserId } from "../lib/getUserId";
 
 export default function Checkout() {
+  const navigate = useNavigate();
+
+  // Use shared anonymous user ID hook
+  const userId = useAnonUserId();
+
   const [openDialog, setOpenDialog] = useState(false);
   const [formValid, setFormValid] = useState(false);
   const [formData, setFormData] = useState<any>(null);
-  const navigate = useNavigate();
 
-  const userId = "guest";
+  // ✅ Skip query until userId exists
+  const cartItems =
+    useQuery(api.cart.getCart, userId ? { userId } : "skip") ?? [];
 
-  // Get cart items
-  const cartItems = useQuery(api.cart.getCart, { userId }) ?? [];
-
-  // Mutation to clear cart
   const clearCartMutation = useMutation(api.cart.clearCart);
 
   // Calculate totals
@@ -34,30 +37,45 @@ export default function Checkout() {
 
   // Clear cart function
   const clearCart = async () => {
+    if (!userId) return;
     try {
       await clearCartMutation({ userId });
+      console.log("Cart cleared successfully");
     } catch (err) {
       console.error("Error clearing cart:", err);
     }
   };
 
-  // Handle continue/checkout
+  // Handle checkout
   const handleContinue = async () => {
-    if (!formData || cartItems.length === 0) return;
+    if (!formValid || !formData || cartItems.length === 0) return;
 
     const timestamp = Date.now();
     const orderId = `ODR${timestamp}`;
 
     try {
-      // Email mutation is inactive for now
-      // await sendEmailMutation({ ... });
+      // Email mutation disabled for now
+      // await sendEmailMutation({...});
 
-      // Show order completed dialog
+      // Show order completed modal
       setOpenDialog(true);
     } catch (err) {
       console.error("Error processing order:", err);
     }
   };
+
+  // Show loading while userId initializes
+  if (!userId) {
+    return (
+      <main className="bg-lightGray px-7">
+        <section className="container mx-auto px-4">
+          <p className="text-center text-black/50 py-20 animate-pulse">
+            Loading checkout...
+          </p>
+        </section>
+      </main>
+    );
+  }
 
   return (
     <main className="bg-lightGray px-7">
@@ -87,13 +105,12 @@ export default function Checkout() {
         </section>
       </section>
 
-      {/* Order completed modal */}
       <OrderCompleted
         open={openDialog}
         onOpenChange={setOpenDialog}
         cartItems={cartItems}
         grandTotal={grandTotal}
-        onClearCart={clearCart} // cart cleared on modal close
+        onClearCart={clearCart} // clears cart on modal close
       />
     </main>
   );

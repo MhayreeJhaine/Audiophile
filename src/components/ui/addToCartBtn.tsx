@@ -1,6 +1,7 @@
 import { useMutation } from "convex/react";
 import { api } from "../../../convex/_generated/api";
 import toast from "react-hot-toast";
+import { useAnonUserId } from "../../lib/getUserId";
 
 interface AddToCartButtonProps {
   product: {
@@ -16,11 +17,12 @@ export default function AddToCartButton({
   product,
   quantity = 1,
 }: AddToCartButtonProps) {
-  const userId = "guest";
+  const userId = useAnonUserId();
   const addToCartMutation = useMutation(api.cart.addToCart);
 
   const handleAddToCart = async () => {
-    console.log("Add to cart clicked", product.name);
+    // console.log("Add to cart clicked", product.name);
+    if (!userId) return toast.error("Please wait...");
     try {
       await addToCartMutation({
         userId,

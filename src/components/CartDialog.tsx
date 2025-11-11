@@ -10,26 +10,50 @@ import { ShoppingCart } from "lucide-react";
 import { Link } from "react-router-dom";
 import type { Id } from "../../convex/_generated/dataModel";
 import toast from "react-hot-toast";
+import { useAnonUserId } from "../lib/getUserId";
 
 export function CartDialog() {
-  const userId = "guest";
-  const cartItems = useQuery(api.cart.getCart, { userId }) ?? [];
+  const userId = useAnonUserId();
+
+  const cartItems =
+    useQuery(api.cart.getCart, userId ? { userId } : "skip") ?? [];
 
   const increaseQuantity = useMutation(api.cart.increaseQuantity);
   const decreaseQuantity = useMutation(api.cart.decreaseQuantity);
   const clearCart = useMutation(api.cart.clearCart);
 
+  // Loading state while userId initializes
+  if (!userId) {
+    return (
+      <button aria-label="Loading cart...">
+        <ShoppingCart className="text-gray-400 animate-pulse" />
+      </button>
+    );
+  }
+
   const handleIncrease = async (itemId: Id<"cart">) => {
-    await increaseQuantity({ itemId });
+    try {
+      await increaseQuantity({ itemId });
+    } catch (err) {
+      console.error("Error increasing quantity:", err);
+    }
   };
 
   const handleDecrease = async (itemId: Id<"cart">) => {
-    await decreaseQuantity({ itemId });
+    try {
+      await decreaseQuantity({ itemId });
+    } catch (err) {
+      console.error("Error decreasing quantity:", err);
+    }
   };
 
   const handleClearCart = async () => {
-    await clearCart({ userId });
-    toast.success("Cart cleared");
+    try {
+      await clearCart({ userId });
+      toast.success("Cart cleared");
+    } catch (err) {
+      console.error("Error clearing cart:", err);
+    }
   };
 
   const total = cartItems.reduce(
@@ -40,8 +64,17 @@ export function CartDialog() {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <button aria-label="Open cart">
-          <ShoppingCart className="text-white hover:cursor-pointer" />
+        <button
+          aria-label="Open cart"
+          className="relative hover:cursor-pointer"
+        >
+          {/* Cart icon */}
+          <ShoppingCart className="text-white" />
+
+          {/* Small circle indicator */}
+          {cartItems.length > 0 && (
+            <span className="absolute -top-1 -right-1 bg-orange w-3 h-3 rounded-full border-2 border-black"></span>
+          )}
         </button>
       </DialogTrigger>
 

@@ -9,6 +9,7 @@
  */
 
 import type * as cart from "../cart.js";
+import type * as functions_emails_sendOrderEmail from "../functions/emails/sendOrderEmail.js";
 import type * as sendConfirmationEmail from "../sendConfirmationEmail.js";
 
 import type {
@@ -27,6 +28,7 @@ import type {
  */
 declare const fullApi: ApiFromModules<{
   cart: typeof cart;
+  "functions/emails/sendOrderEmail": typeof functions_emails_sendOrderEmail;
   sendConfirmationEmail: typeof sendConfirmationEmail;
 }>;
 declare const fullApiWithMounts: typeof fullApi;
