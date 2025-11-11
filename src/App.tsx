@@ -11,15 +11,12 @@ import Speakers from "./pages/Speakers";
 import Checkout from "./pages/Checkout";
 import ProductDetails from "./pages/ProductDetails";
 import { Toaster } from "react-hot-toast";
-import ClearCartOnLoad from "./lib/clearCartOnLoad";
 
 const App = () => {
   return (
     <div className="app">
       <Header />
       <Toaster position="top-center" reverseOrder={false} />
-
-      <ClearCartOnLoad />
 
       <Routes>
         <Route path="/" element={<Home />} />
