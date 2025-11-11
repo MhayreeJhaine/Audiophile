@@ -15,10 +15,9 @@ import { useAnonUserId } from "../lib/getUserId";
 export function CartDialog() {
   const userId = useAnonUserId();
 
-  const cartItems =
-    useQuery(api.cart.getCart, userId ? { userId } : "skip")?.filter(
-      (item) => !!item?._id
-    ) ?? [];
+  const cartItems = userId
+    ? (useQuery(api.cart.getCart, { userId }) ?? [])
+    : [];
 
   const increaseQuantity = useMutation(api.cart.increaseQuantity);
   const decreaseQuantity = useMutation(api.cart.decreaseQuantity);
